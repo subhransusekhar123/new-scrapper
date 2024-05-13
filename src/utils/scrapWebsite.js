@@ -1,10 +1,11 @@
 import axios from "axios";
 import * as cheerio from 'cheerio';
+import async from 'async';
 
 
 
 
-async function dataAfterScrapingWebs(url) {
+async function scrapWebsite(url,callback) {
 
     try {
         const response = await axios.get(url);
@@ -21,7 +22,7 @@ async function dataAfterScrapingWebs(url) {
 
         console.log(Array.from(emails), url);
         console.log(`Data scraped successfully from ${url}`);
-        return ([ Array.from(emails) , url ])
+        callback([ Array.from(emails) , url ])
         
     } catch (error) {
 
@@ -37,6 +38,54 @@ async function dataAfterScrapingWebs(url) {
         }
     }
 }
+
+
+// const dataAfterScrapingWebs = async(urls, callback) => {
+//     async.parallel(urls => {
+//         urls.map(url => {
+//             return async(cb)=>{
+//                await scrapWebsite(url,cb)
+//             }
+//         }),
+//         (err, results) => {
+//             if(err){
+//                 console.error("Error scraping this website", err.message)
+//                 return callback(err);
+//             }
+//             callback(null, results)
+//         }
+//     })
+// }
+
+
+const dataAfterScrapingWebs = (urls, callback) => {
+
+    const allUrl = urls.map((url, i) => {
+        console.log(i)
+        return async (cb) => {
+            try {
+                const result = await scrapWebsite(url);
+                cb(null, result);
+            } catch (error) {
+                console.error("Error scraping this website", error.message);
+                cb(error);
+            }
+        };
+    })
+
+    console.log(allUrl);
+    
+    async.parallel(
+        allUrl,
+        (err, results) => {
+            if (err) {
+                console.error("Error scraping websites", err.message);
+                return callback(err);
+            }
+            callback(null, results);
+        }
+    );
+};
 
 
 

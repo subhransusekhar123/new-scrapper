@@ -26,26 +26,38 @@ const extractEmailFromUrl = async (req, res) => {
             processStrings(data.onlyCompany, 1000)
                 .then(async (data) => {
                     console.log(data, "dataString")
-                    const allwebsitesName = new websiteModel({
-                        websiteNamesArray: data,
-                        name: req.file.originalname
-                    })
+                    // const allwebsitesName = new websiteModel({
+                    //     websiteNamesArray: data,
+                    //     name: req.file.originalname
+                    // })
 
-                    saveData = await allwebsitesName.save();
-                    console.log(saveData)
-                    for (let i = 0; i < data.length; i++) {
-                        await dataAfterScrapingWebs(data[i])
-                            .then((data) => console.log(data))
-                            .catch((err) => console.log(err))
-                    }
+                    // saveData = await allwebsitesName.save();
+                    // console.log(saveData)
+
+
+
+                    dataAfterScrapingWebs(data, (err, results) => {
+                        if (err) {
+                            console.error("Error scraping websites:", err);
+                        } else {
+                            console.log("Scraping results:", results);
+                        }
+                    });
+                    // for (let i = 0; i < data.length; i++) {
+                    //     await dataAfterScrapingWebs(data[i])
+                    //         .then((data) => console.log(data))
+                    //         .catch((err) => console.log(err))
+                    // }
 
                  getTime()
 
                 }) //this is just to add https to all the data
 
+                res.send("hello world ")
 
         }
 
+       
     } catch (error) {
         console.log(error)
     }
