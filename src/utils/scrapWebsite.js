@@ -58,17 +58,16 @@ async function scrapWebsite(url,callback) {
 // }
 
 
-const dataAfterScrapingWebs = (urls, callback) => {
+const dataAfterScrapingWebs = async(urls) => {
 
     const allUrl = urls.map((url, i) => {
         console.log(i)
-        return async (cb) => {
+        return async () => {
             try {
                 const result = await scrapWebsite(url);
-                cb(null, result);
+                return result;
             } catch (error) {
                 console.error("Error scraping this website", error.message);
-                cb(error);
             }
         };
     })
@@ -82,7 +81,9 @@ const dataAfterScrapingWebs = (urls, callback) => {
                 console.error("Error scraping websites", err.message);
                 return callback(err);
             }
-            callback(null, results);
+            else{
+                return results;
+            }
         }
     );
 };

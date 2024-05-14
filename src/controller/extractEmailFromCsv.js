@@ -22,36 +22,46 @@ const extractEmailFromUrl = async (req, res) => {
         if (req.file?.path) {
             data = await readCsv(csvFile)
             console.log(data, "extractEmailFromUrl");
+            const httpsAddedUrls = await processStrings(data.onlyCompany,1000)
+            const dataAfterScrapingallTheUrls =await dataAfterScrapingWebs(httpsAddedUrls, (err, results)=>{
+                if(err){
+                    console.log(err.message)
+                }else{
+                    console.log(results)
+                }
+            })
 
-            processStrings(data.onlyCompany, 1000)
-                .then(async (data) => {
-                    console.log(data, "dataString")
-                    // const allwebsitesName = new websiteModel({
-                    //     websiteNamesArray: data,
-                    //     name: req.file.originalname
-                    // })
+            console.log(dataAfterScrapingallTheUrls)
 
-                    // saveData = await allwebsitesName.save();
-                    // console.log(saveData)
+            // processStrings(data.onlyCompany, 1000)
+            //     .then(async (data) => {
+            //         console.log(data, "dataString")
+            //         // const allwebsitesName = new websiteModel({
+            //         //     websiteNamesArray: data,
+            //         //     name: req.file.originalname
+            //         // })
 
+            //         // saveData = await allwebsitesName.save();
+            //         // console.log(saveData)
 
+            //         dataAfterScrapingWebs(data, (err, results) => {
+            //             if (err) {
+            //                 console.error("Error scraping websites:", err);
+            //             } else {
+            //                 console.log("Scraping results:", results);
+            //             }
+            //         });
 
-                    dataAfterScrapingWebs(data, (err, results) => {
-                        if (err) {
-                            console.error("Error scraping websites:", err);
-                        } else {
-                            console.log("Scraping results:", results);
-                        }
-                    });
-                    // for (let i = 0; i < data.length; i++) {
-                    //     await dataAfterScrapingWebs(data[i])
-                    //         .then((data) => console.log(data))
-                    //         .catch((err) => console.log(err))
-                    // }
+                   
+            //         // for (let i = 0; i < data.length; i++) {
+            //         //     await dataAfterScrapingWebs(data[i])
+            //         //         .then((data) => console.log(data))
+            //         //         .catch((err) => console.log(err))
+            //         // }
 
-                 getTime()
+            //      getTime()
 
-                }) //this is just to add https to all the data
+            //     }) //this is just to add https to all the data
 
                 res.send("hello world ")
 
@@ -60,6 +70,9 @@ const extractEmailFromUrl = async (req, res) => {
        
     } catch (error) {
         console.log(error)
+        res.send({
+            message: `It is from :: extractEmailUrl${error.message}`
+        })
     }
 
 
