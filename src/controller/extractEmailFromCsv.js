@@ -6,80 +6,38 @@ import processStrings from "../utils/validUrl.js";
 
 
 const extractEmailFromUrl = async (req, res) => {
-    //data came 
-    //push it to read data in csv
-
-    //after that send it to mongodb
-    //fetch that and run it to scrap website
-    getTime()
+    getTime();
     try {
-
-        let data;
-        let saveData;
-
-        console.log(req.file, "extractEmailFromUrl")
-        const csvFile = req.file.path;
-        if (req.file?.path) {
-            data = await readCsv(csvFile)
-            console.log(data, "extractEmailFromUrl");
-            const httpsAddedUrls = await processStrings(data.onlyCompany,1000)
-            const dataAfterScrapingallTheUrls =await dataAfterScrapingWebs(httpsAddedUrls, (err, results)=>{
-                if(err){
-                    console.log(err.message)
-                }else{
-                    console.log(results)
-                }
-            })
-
-            console.log(dataAfterScrapingallTheUrls)
-
-            // processStrings(data.onlyCompany, 1000)
-            //     .then(async (data) => {
-            //         console.log(data, "dataString")
-            //         // const allwebsitesName = new websiteModel({
-            //         //     websiteNamesArray: data,
-            //         //     name: req.file.originalname
-            //         // })
-
-            //         // saveData = await allwebsitesName.save();
-            //         // console.log(saveData)
-
-            //         dataAfterScrapingWebs(data, (err, results) => {
-            //             if (err) {
-            //                 console.error("Error scraping websites:", err);
-            //             } else {
-            //                 console.log("Scraping results:", results);
-            //             }
-            //         });
-
-                   
-            //         // for (let i = 0; i < data.length; i++) {
-            //         //     await dataAfterScrapingWebs(data[i])
-            //         //         .then((data) => console.log(data))
-            //         //         .catch((err) => console.log(err))
-            //         // }
-
-            //      getTime()
-
-            //     }) //this is just to add https to all the data
-
-                res.send("hello world ")
-
+        if (!req.file?.path) {
+            return res.status(400).send("No file uploaded.");
         }
 
-       
+        const csvFile = req.file.path;
+        console.log(req.file, "extractEmailFromUrl");
+
+        // Read the CSV file
+        const data = await readCsv(csvFile);
+        console.log(data, "extractEmailFromUrl");
+
+        // Process strings to add https
+        const httpsAddedUrls = await processStrings(data.onlyCompany, 1000);
+
+        // Scrape all URLs
+        dataAfterScrapingWebs(httpsAddedUrls, (err, results) => {
+            console.log("entered into data");
+            if (err) {
+                console.log(err.message);
+                return res.status(500).send("An error occurred while scraping the websites.");
+            } else {
+                console.log(results, "from data scraping all the urls");
+                return res.send("hello world");
+            }
+        });
     } catch (error) {
-        console.log(error)
-        res.send({
-            message: `It is from :: extractEmailUrl${error.message}`
-        })
+        console.log(error);
+        return res.status(500).send({
+            message: `It is from :: extractEmailUrl ${error.message}`
+        });
     }
-
-
-    // if(data){
-    //     dataAfterScrapingWebs(data)
-    // }
-
-}
-
+};
 export default extractEmailFromUrl;

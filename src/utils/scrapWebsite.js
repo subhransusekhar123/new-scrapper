@@ -5,7 +5,7 @@ import async from 'async';
 
 
 
-async function scrapWebsite(url,callback) {
+async function scrapWebsite(url) {
 
     try {
         const response = await axios.get(url);
@@ -22,7 +22,7 @@ async function scrapWebsite(url,callback) {
 
         console.log(Array.from(emails), url);
         console.log(`Data scraped successfully from ${url}`);
-        callback([ Array.from(emails) , url ])
+        return( { emails: Array.from(emails) , url} )
         
     } catch (error) {
 
@@ -64,8 +64,8 @@ const dataAfterScrapingWebs = async(urls) => {
         console.log(i)
         return async () => {
             try {
-                const result = await scrapWebsite(url);
-                return result;
+                return await scrapWebsite(url);
+                
             } catch (error) {
                 console.error("Error scraping this website", error.message);
             }
@@ -79,10 +79,10 @@ const dataAfterScrapingWebs = async(urls) => {
         (err, results) => {
             if (err) {
                 console.error("Error scraping websites", err.message);
-                return callback(err);
+                callback(err);
             }
             else{
-                return results;
+                return results
             }
         }
     );
