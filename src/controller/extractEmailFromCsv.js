@@ -23,16 +23,20 @@ const extractEmailFromUrl = async (req, res) => {
         const httpsAddedUrls = await processStrings(data.onlyCompany, 1000);
 
         // Scrape all URLs
-        dataAfterScrapingWebs(httpsAddedUrls, (err, results) => {
-            console.log("entered into data");
-            if (err) {
-                console.log(err.message);
-                return res.status(500).send("An error occurred while scraping the websites.");
-            } else {
-                console.log(results, "from data scraping all the urls");
-                return res.send("hello world");
-            }
-        });
+        const allEmailsAndUrls =await dataAfterScrapingWebs(httpsAddedUrls);
+        console.log(allEmailsAndUrls," allEmailsAndUrls"
+        )
+        //will see
+        // (err, results) => {
+        //     console.log("entered into data");
+        //     if (err) {
+        //         console.log(err.message);
+        //         return res.status(500).send("An error occurred while scraping the websites.");
+        //     } else {
+        //         console.log(results, "from data scraping all the urls");
+        //         return res.send("hello world");
+        //     }
+        // }
     } catch (error) {
         console.log(error);
         return res.status(500).send({

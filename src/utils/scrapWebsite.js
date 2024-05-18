@@ -79,7 +79,6 @@ const dataAfterScrapingWebs = async(urls) => {
         (err, results) => {
             if (err) {
                 console.error("Error scraping websites", err.message);
-                callback(err);
             }
             else{
                 return results
