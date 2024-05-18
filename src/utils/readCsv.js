@@ -16,6 +16,12 @@ const readCsv = (csvFile) => {
                     onlyCompany.push(data.websiteName);
                 });
 
+                // fs.createReadStream(results)
+                // .on('data', (data)=>{
+                //     onlyCompany.push(data.websiteName)
+                // })
+                
+
                 resolve({ onlyCompany, results });
             })
             .on('error', (error) => {

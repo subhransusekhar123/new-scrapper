@@ -14,35 +14,17 @@ const extractEmailFromUrl = async (req, res) => {
 
         const csvFile = req.file.path;
         console.log(req.file, "extractEmailFromUrl");
-
-        // Read the CSV file
         const data = await readCsv(csvFile);
-        console.log(data, "extractEmailFromUrl");
-
-        // Process strings to add https
+        console.log(data, "csvFileRead");
         const httpsAddedUrls = await processStrings(data.onlyCompany, 1000);
-
-        // Scrape all URLs
-        // const allEmailsAndUrls =await dataAfterScrapingWebs(httpsAddedUrls);
-        // console.log(allEmailsAndUrls," allEmailsAndUrls")
-
-
+        console.log(httpsAddedUrls, "httpsAddedUrls");
         dataAfterScrapingWebs(httpsAddedUrls)
-            .then((data)=> {
+            .then((data) => {
                 console.log(data)
+                res.json(data)
             })
-            .catch((err)=> { console.log(err)})
-        //will see
-        // (err, results) => {
-        //     console.log("entered into data");
-        //     if (err) {
-        //         console.log(err.message);
-        //         return res.status(500).send("An error occurred while scraping the websites.");
-        //     } else {
-        //         console.log(results, "from data scraping all the urls");
-        //         return res.send("hello world");
-        //     }
-        // }
+            .catch((err) => { console.log(err) })
+
     } catch (error) {
         console.log(error);
         return res.status(500).send({
