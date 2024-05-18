@@ -22,8 +22,8 @@ async function scrapWebsite(url) {
 
         console.log(Array.from(emails), url);
         console.log(`Data scraped successfully from ${url}`);
-        return( { emails: Array.from(emails) , url} )
-        
+        return ({ emails: Array.from(emails), url })
+
     } catch (error) {
 
         if (error.response) {
@@ -58,36 +58,51 @@ async function scrapWebsite(url) {
 // }
 
 
-const dataAfterScrapingWebs = async(urls) => {
 
-    const allUrl = urls.map((url, i) => {
-        console.log(i)
-        return async () => {
-            try {
-                return await scrapWebsite(url);
-                
-            } catch (error) {
-                console.error("Error scraping this website", error.message);
-            }
-        };
-    })
 
-    console.log(allUrl);
+
+const dataAfterScrapingWebs = (urls) => {
+
+    return new Promise((res, rej)=> {
+        const allUrl = urls.map((url, i) => {
+            return async () => {
+                try {
+                   return await scrapWebsite(url)
     
-    async.parallel(
-        allUrl,
-        (err, results) => {
-            if (err) {
-                console.error("Error scraping websites", err.message);
+                } catch (error) {
+                    console.error("Error scraping this website", error.message);
+                }
             }
-            else{
-                return results
+    
+    
+        })
+    
+        console.log(allUrl);
+    
+        async.parallel(
+            allUrl,
+            (err, results) => {
+                if (err) {
+                    console.error("Error scraping websites", err.message);
+                    rej(err)
+                }
+                else{
+                    console.log(results, "results");
+                    res(results) 
+                }
+                // console.log(err, results)
             }
-        }
-    );
+        );
+
+    })
+    // let results = [] ;
+
+    
+
+    // console.log(results, "results from last scrap")
 };
 
 
 
 
-export default dataAfterScrapingWebs ;
+export default dataAfterScrapingWebs;

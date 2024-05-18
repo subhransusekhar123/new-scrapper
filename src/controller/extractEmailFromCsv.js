@@ -23,9 +23,15 @@ const extractEmailFromUrl = async (req, res) => {
         const httpsAddedUrls = await processStrings(data.onlyCompany, 1000);
 
         // Scrape all URLs
-        const allEmailsAndUrls =await dataAfterScrapingWebs(httpsAddedUrls);
-        console.log(allEmailsAndUrls," allEmailsAndUrls"
-        )
+        // const allEmailsAndUrls =await dataAfterScrapingWebs(httpsAddedUrls);
+        // console.log(allEmailsAndUrls," allEmailsAndUrls")
+
+
+        dataAfterScrapingWebs(httpsAddedUrls)
+            .then((data)=> {
+                console.log(data)
+            })
+            .catch((err)=> { console.log(err)})
         //will see
         // (err, results) => {
         //     console.log("entered into data");
