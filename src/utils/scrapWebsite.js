@@ -6,6 +6,7 @@ import async from 'async';
 
 
 async function scrapWebsite(url) {
+    
 
     try {
         const response = await axios.get(url);
@@ -20,9 +21,18 @@ async function scrapWebsite(url) {
             emails.add(match[0]);
         }
 
+        // extra
+
+
+
+        // extra
+
         console.log(Array.from(emails), url);
         console.log(`Data scraped successfully from ${url}`);
-        return ({ emails: Array.from(emails), url })
+        if(emails){
+            return ({ emails: Array.from(emails), url })
+        }
+        
 
     } catch (error) {
 
@@ -38,25 +48,6 @@ async function scrapWebsite(url) {
         }
     }
 }
-
-
-// const dataAfterScrapingWebs = async(urls, callback) => {
-//     async.parallel(urls => {
-//         urls.map(url => {
-//             return async(cb)=>{
-//                await scrapWebsite(url,cb)
-//             }
-//         }),
-//         (err, results) => {
-//             if(err){
-//                 console.error("Error scraping this website", err.message)
-//                 return callback(err);
-//             }
-//             callback(null, results)
-//         }
-//     })
-// }
-
 
 
 

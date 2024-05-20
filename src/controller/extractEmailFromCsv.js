@@ -1,5 +1,6 @@
 import getTime from "../../newIndex.js";
 import websiteModel from "../model/websiteModel.js";
+import json2Csv from "../utils/json2Csv.js";
 import readCsv from "../utils/readCsv.js";
 import dataAfterScrapingWebs from "../utils/scrapWebsite.js";
 import processStrings from "../utils/validUrl.js";
@@ -21,6 +22,7 @@ const extractEmailFromUrl = async (req, res) => {
         dataAfterScrapingWebs(httpsAddedUrls)
             .then((data) => {
                 console.log(data)
+                json2Csv(data);
                 res.json(data)
             })
             .catch((err) => { console.log(err) })
