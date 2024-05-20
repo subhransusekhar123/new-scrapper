@@ -34,7 +34,7 @@ const json2Csv = (data) => {
         sortHeader:false,
         trimFieldValues:false,
         trimHeaderFields:false,
-        unwindArrays:false
+        unwindArrays:true
     })
     
     // const json2csvParser = new Parser({ fields, transforms });
