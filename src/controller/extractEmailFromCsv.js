@@ -1,5 +1,6 @@
 import getTime from "../../newIndex.js";
 import websiteModel from "../model/websiteModel.js";
+import jsonToCsvConverter from "../utils/JSONTOCSV1.js";
 import json2Csv from "../utils/json2Csv.js";
 import jsonToCsv from "../utils/jsonToCsv.js";
 import readCsv from "../utils/readCsv.js";
@@ -27,8 +28,9 @@ const extractEmailFromUrl = async (req, res) => {
                 //     if(obj !== null) return obj
                 // })
                 // console.log(jsonData);
-                json2Csv(data);
+                // json2Csv(data);
                 // jsonToCsv(jsonData)
+                jsonToCsvConverter(data)
                 
                 res.json(data)
             })
