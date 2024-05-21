@@ -1,14 +1,49 @@
-import converter from 'json-2-csv';
+import { Parser } from 'json2csv';
 import fs from 'fs';
 
-const convertJsonToCSV = async(jsonData) => {
-    try{
-        const csv = await converter.json2csv(jsonData);
-        fs.writeFileSync("todos.csv",csv);
-    }
-    catch(err){
-        console.log(err);
-    }
-} 
+function flattenArray(arr) {
+    return arr.join(',');
+}
 
-convertJsonToCSV([{"name": "subhransu", "age": 28, "earning": "50L"},{"name": "subhransu1", "age": 18, "earning": "50T"} ])
+const jsonToCsv = (json) => {
+
+    function flattenJSON(json) {
+        return json.map(entry => {
+            const flattenedEntry = {};
+    
+            for (const [key, value] of Object.entries(entry)) {
+                if (Array.isArray(value)) {
+                    flattenedEntry[key] = flattenArray(value);
+                } else {
+                    flattenedEntry[key] = value;
+                }
+            }
+    
+            return flattenedEntry;
+        });
+    }
+    
+    const flattenedJson = flattenJSON(json);
+    
+    const fields = Object.keys(flattenedJson[0]);
+    const opts = { fields };
+    
+    try {
+        const parser = new Parser(opts);
+        const csv = parser.parse(flattenedJson);
+        fs.writeFileSync('./public/temp/new.csv', csv);
+        console.log("file written successfully")
+        console.log(csv);
+    } catch (err) {
+        console.error(err);
+    }
+
+}
+
+export default jsonToCsv ;
+
+
+
+
+ 
+

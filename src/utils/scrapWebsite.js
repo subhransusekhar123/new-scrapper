@@ -21,16 +21,13 @@ async function scrapWebsite(url) {
             emails.add(match[0]);
         }
 
-        // extra
-
-
-
-        // extra
 
         console.log(Array.from(emails), url);
         console.log(`Data scraped successfully from ${url}`);
-        if(emails){
-            return ({ emails: Array.from(emails), url })
+        if(emails.size > 0){
+            return ({ emails: Array.from(emails), url: url.replace("https://","") })
+        }else{
+            return null
         }
         
 
@@ -39,12 +36,14 @@ async function scrapWebsite(url) {
         if (error.response) {
 
             console.error(`Error fetching data from ${url}. Status code: ${error.response.status}`);
+            return null
         } else if (error.request) {
 
             console.error(`Error fetching data from ${url}. No response received.`);
+            return null
         } else {
-
             console.error(`Error fetching data from ${url}:`, error.message);
+            return null
         }
     }
 }
