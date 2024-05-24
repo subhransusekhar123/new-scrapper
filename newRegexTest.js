@@ -1,9 +1,5 @@
 import axios from "axios";
-import * as cheerio from 'cheerio';
-import async from 'async';
-
-
-
+import cheerio from "cheerio";
 async function scrapWebsite(url) {
   try {
     const response = await axios.get(url);
@@ -54,50 +50,9 @@ async function scrapWebsite(url) {
 }
 
 
+scrapWebsite("https://mymilitarysavings.com") 
 
-
-const dataAfterScrapingWebs = (urls) => {
-
-    return new Promise((res, rej)=> {
-        const allUrl = urls.map((url, i) => {
-            return async () => {
-                try {
-                   return await scrapWebsite(url)
-    
-                } catch (error) {
-                    console.error("Error scraping this website", error.message);
-                }
-            }
-    
-    
-        })
-    
-        console.log(allUrl);
-    
-        async.parallel(
-            allUrl,
-            (err, results) => {
-                if (err) {
-                    console.error("Error scraping websites", err.message);
-                    rej(err)
-                }
-                else{
-                    console.log(results, "results");
-                    res(results) 
-                }
-                // console.log(err, results)
-            }
-        );
-
-    })
-    // let results = [] ;
-
-    
-
-    // console.log(results, "results from last scrap")
-};
-
-
-
-
-export default dataAfterScrapingWebs;
+  .then((data) => {
+    console.log(data);
+  })
+  .catch((err) => console.log(err));
