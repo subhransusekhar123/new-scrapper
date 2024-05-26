@@ -9,13 +9,14 @@ async function scrapWebsite(url) {
     const response = await axios.get(url);
     const $ = cheerio.load(response.data);
     const bodyText = $("body").html();
-    console.log($);
+    
    
     const emails = new Set(); // Using a set to avoid duplicates;
 
  
 
     const regex = /<a[\s\S]*? \bhref="(mailto:(.*?))"[\s\S]*?>(.*?)<\/a>/gm;
+
     let matches;
 
     while ((matches = regex.exec(bodyText)) !== null) {
@@ -46,7 +47,7 @@ async function scrapWebsite(url) {
     } else if (error.request) {
       console.error(`Error fetching data from ${url}. No response received.`);
       return null;
-    } else {
+    } else{
       console.error(`Error fetching data from ${url}:`, error.message);
       return null;
     }
