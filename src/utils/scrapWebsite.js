@@ -8,28 +8,53 @@ async function scrapWebsite(url) {
   try {
     const response = await axios.get(url);
     const $ = cheerio.load(response.data);
-    const bodyText = $("body").html();
+    // console.log($,"htmlofUrl");
+    const links = $("a");
+    // console.log(links,"links");
+    const emails = new Set();
+    const mailtoPattern = /^mailto:([^?]+)/;
+    for(const link in links){
+      const href = links[link]?.attribs?.href;
+      console.log(href,"href");
+      if(href && href.startsWith("mailto:")){
+        const email = href.match(mailtoPattern)
+        if(email){
+          let arrayOfEmails = mailtoPattern.exec(href);
+          emails.add(arrayOfEmails[1]);
+        }
+      }
+    } 
+   
+    // if($){
+    //   for(let i = 0 ; i < links.length; i++){
+        
+    //     //  matchedEmail = links[i].getattributes.href.match(mailtoPattern);
+    //      let arrayofEmail = mailtoPattern.exec(links[i]);
+    //      emails.add(arrayofEmail[1])
+    //   }
+    // }
+    
     
    
-    const emails = new Set(); // Using a set to avoid duplicates;
+     // Using a set to avoid duplicates;
 
  
 
-    const regex = /<a[\s\S]*? \bhref="(mailto:(.*?))"[\s\S]*?>(.*?)<\/a>/gm;
+    // const regex = /<a[\s\S]*? \bhref="(mailto:(.*?))"[\s\S]*?>(.*?)<\/a>/gm;
 
-    let matches;
+    // let matches;
 
-    while ((matches = regex.exec(bodyText)) !== null) {
-      const mailto = matches[1];
-      emails.add(matches[2])
-      const email = matches[2];
-      const linkText = matches[3];
+    // while ((matches = regex.exec(bodyText)) !== null) {
+    //   const mailto = matches[1];
+    //   emails.add(matches[2])
+    //   const email = matches[2];
+    //   const linkText = matches[3];
 
       
-      console.log("Mailto:", mailto);
-      console.log("Email:", email);
-      console.log("Link Text:", linkText);
-    }
+    //   console.log("Mailto:", mailto);
+    //   console.log("Email:", email);
+    //   console.log("Link Text:", linkText);
+    // }
 
     console.log(Array.from(emails), url);
     console.log(`Data scraped successfully from ${url}`);
@@ -91,11 +116,11 @@ const dataAfterScrapingWebs = (urls) => {
         );
 
     })
-    // let results = [] ;
+//     // let results = [] ;
 
     
 
-    // console.log(results, "results from last scrap")
+//     // console.log(results, "results from last scrap")
 };
 
 
