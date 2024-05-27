@@ -1,7 +1,9 @@
 import dotenv from 'dotenv';
 import connectDB from './src/db/index.js';
 import { app } from './app.js';
+import path  from 'path';
 
+const __dirname = path.resolve();
 
 dotenv.config({
     path:'./.env'
@@ -10,7 +12,7 @@ dotenv.config({
 
 
 app.get('/', (req,res)=>{
-    res.send("<h1>hello world!!!</h1>")
+    res.sendFile(path.join(__dirname,"src/views","index.html"))
 })
 
 

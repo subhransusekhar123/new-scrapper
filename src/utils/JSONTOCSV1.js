@@ -13,7 +13,7 @@ const jsonToCsvConverter = (data) => {
       };
       
       // Create a writable stream
-      const outputPath = path.join(currentDir, 'output.csv');
+      const outputPath = path.join(currentDir,"public/temp", 'output.csv');
       const writableStream = fs.createWriteStream(outputPath);
       
       // Write headers
