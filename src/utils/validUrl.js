@@ -16,7 +16,7 @@ function isValidURL(url) {
         for (var i = 0; i < chunkSize && currentIndex < strings.length; i++) {
           // console.log(strings[currentIndex]);
           var url = "https://" + strings[currentIndex];
-
+          // console.log(url)
          
           if (isValidURL(url)) {
             validURLs.push(url);

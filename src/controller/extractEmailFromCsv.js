@@ -21,17 +21,13 @@ const extractEmailFromUrl = async (req, res) => {
         const data =await readXlsx(csvFile);
         // const data = await readCsv(csvFile);
         console.log(data, "csvFileRead");
+        console.log(data,"data")
         const httpsAddedUrls = await processStrings(data.onlyCompany, 1000);
         console.log(httpsAddedUrls, "httpsAddedUrls");
         dataAfterScrapingWebs(httpsAddedUrls)
             .then((data) => {
                 console.log(data)
-                // let jsonData = data.map((obj)=>{
-                //     if(obj !== null) return obj
-                // })
-                // console.log(jsonData);
-                // json2Csv(data);
-                // jsonToCsv(jsonData)
+                
                 jsonToCsvConverter(data)
                 
                 res.json(data)
