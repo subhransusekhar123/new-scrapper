@@ -27,9 +27,7 @@ const extractEmailFromUrl = async (req, res) => {
         dataAfterScrapingWebs(httpsAddedUrls)
             .then((data) => {
                 console.log(data)
-                
                 jsonToCsvConverter(data)
-                
                 res.json(data)
             })
             .catch((err) => { console.log(err) })
